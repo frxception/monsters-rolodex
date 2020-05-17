@@ -10,6 +10,9 @@ class App extends React.Component {
             monsters: [], //note: initialize array value
             searchQuery: ''
         }
+        
+        //NOTE: This ensures that the 'this' keyword will be binded in this function if youre not using arrow function (lexical scope)
+        // this.handleChange = this.handleChange.bind(this)
     }
 
     componentDidMount() {
@@ -18,22 +21,24 @@ class App extends React.Component {
             .then( users => this.setState({ monsters: users}))
 
     }
+    
+    handleChange = (e) => { //NOTE: using arrow funciton will automatically bind 'this' (no need to use bind --- automaticall does lexical scoping)
+        console.log('@App: synthetic event: ', e)
+        this.setState({searchQuery: e.target.value}, ()=> console.log('@App async query state: ', this.state));
+        //NOTE: Is synchoronus event hence the delay value of the state
+        console.log('@App: sync search query state: ', this.state)
+    }
 
     render() {
         const { monsters, searchQuery } = this.state;
         const filtMonsters = monsters.filter( m =>
             m.name.toLowerCase().includes(searchQuery.toLowerCase())    
-        )
+        );
+        
         return (
             <div className="App">
-                <Search placeholder='search your monster' 
-                        handleChange={ e => {
-                            console.log('@App: synthetic event: ', e)
-                            this.setState({searchQuery: e.target.value}, ()=> console.log('@App async query state: ', this.state));
-                            //NOTE: Is synchoronus event hence the delay value of the state
-                            console.log('@App: sync search query state: ', this.state)
-                        }}/>
-                
+                <h1>Monster Rolodex (fRX)</h1>
+                <Search placeholder='search your monster'  handleChange={this.handleChange}/>
                 <CardList monsters={filtMonsters}>
                 </CardList>
             </div>
