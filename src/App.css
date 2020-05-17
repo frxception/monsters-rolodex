@@ -28,6 +28,15 @@
   color: #61dafb;
 }
 
+.input-search-field{
+    width: 400px;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    height: 150px;
+}
+
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
